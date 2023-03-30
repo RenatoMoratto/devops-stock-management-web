@@ -1,5 +1,5 @@
 # React config
-FROM node:16-alpine as builder
+FROM node:16-alpine AS builder
 WORKDIR /app
 COPY package.json .
 COPY yarn.lock .
@@ -8,7 +8,11 @@ COPY ..
 RUN yarn build
 
 # Nginx config
-FROM nginx:1.21.0-alpine as production
+FROM nginx:1.21.0-alpine AS production
+# Add a non-root user
+RUN adduser -D jenkins
+# Change to non-root user
+USER jenkins
 ENV NODE_ENV production
 # Copy built assets from `builder` image
 COPY --from=builder /app/build /usr/share/nginx/html
