@@ -14,6 +14,12 @@ pipeline {
             }
         }
 
+        stage('Test') {
+            steps {
+                sh 'yarn coverage'
+            }
+        }
+
         stage('Analysis') {
             environment {
                 scannerHome = tool 'sonar'
