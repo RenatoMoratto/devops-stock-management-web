@@ -1,11 +1,13 @@
-import { VStack } from "@chakra-ui/react";
+import { Box } from "@chakra-ui/react";
 import { Header } from "@/components/Header";
+import { ProductList } from "@/components/ProductList";
 
 function App() {
 	return (
-		<VStack bgColor="gray.100">
+		<Box bgColor="gray.100" minHeight="100vh">
 			<Header />
-		</VStack>
+			<ProductList />
+		</Box>
 	);
 }
 
