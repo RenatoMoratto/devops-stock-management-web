@@ -1,10 +1,18 @@
 import { describe, expect } from "vitest";
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { ProductListHeader } from "./index";
 
 describe("ProductListHeader", () => {
+	let clickOpenButton = false;
+
 	beforeEach(() => {
-		render(<ProductListHeader />);
+		render(
+			<ProductListHeader
+				openModal={() => {
+					clickOpenButton = !clickOpenButton;
+				}}
+			/>
+		);
 	});
 
 	it("renders the correct title", () => {
@@ -15,6 +23,16 @@ describe("ProductListHeader", () => {
 	it("render buttons", () => {
 		const buttons = screen.getAllByRole("button");
 
-		expect(buttons.length).toBe(2);
+		expect(buttons).toHaveLength(2);
+	});
+
+	it("call openModal on button click", () => {
+		const button = screen.getByText(/Adicionar produto/);
+
+		const previousValue = clickOpenButton;
+
+		fireEvent.click(button);
+
+		expect(!clickOpenButton).toBe(previousValue);
 	});
 });

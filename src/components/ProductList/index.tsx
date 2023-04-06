@@ -51,12 +51,14 @@ const MOCK_PRODUCTS: ProductTableItem[] = [
 	},
 ];
 
-export function ProductList() {
+type ProductListProps = { openModal: () => void };
+
+export function ProductList(props: ProductListProps) {
 	const [productList, setProductList] = useState<ProductTableItem[]>(MOCK_PRODUCTS);
 
 	return (
 		<VStack paddingY="1.5rem" paddingX="3rem" gap="1.5rem">
-			<ProductListHeader />
+			<ProductListHeader openModal={props.openModal} />
 			<ProductTable data={productList} />
 		</VStack>
 	);
