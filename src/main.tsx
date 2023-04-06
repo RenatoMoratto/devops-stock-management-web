@@ -5,11 +5,16 @@ import App from "./App";
 
 const colors = {
 	brand: {
-		900: "#007452",
+		500: "#007452",
 	},
 };
 
-const theme = extendTheme({ colors });
+const fonts = {
+	heading: `'Open Sans', sans-serif`,
+	body: `'Raleway', sans-serif`,
+};
+
+const theme = extendTheme({ fonts, colors });
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
 	<React.StrictMode>
