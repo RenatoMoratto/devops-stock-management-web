@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for App.tsx</title>
+    <title>Code coverage report for src/components/ProductListHeader/index.tsx</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="prettify.css" />
-    <link rel="stylesheet" href="base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="index.html">All files</a> App.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/ProductListHeader</a> index.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>35/35</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>35/35</span>
+                <span class='fraction'>25/25</span>
             </div>
         
             
@@ -88,17 +88,8 @@
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a>
-<a name='L30'></a><a href='#L30'>30</a>
-<a name='L31'></a><a href='#L31'>31</a>
-<a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a>
-<a name='L34'></a><a href='#L34'>34</a>
-<a name='L35'></a><a href='#L35'>35</a>
-<a name='L36'></a><a href='#L36'>36</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L26'></a><a href='#L26'>26</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
@@ -122,52 +113,31 @@
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RepeatClockIcon, AddIcon } from "@chakra-ui/icons";
+import { HStack, Heading, Button, Text, IconButton } from "@chakra-ui/react";
 &nbsp;
-function App() {
-  const [count, setCount] = useState(0)
+type ProductListHeaderProps = { openModal: () =&gt; void };
 &nbsp;
-  return (
-    &lt;div className="App"&gt;
-      &lt;div&gt;
-        &lt;a href="https://vitejs.dev" target="_blank"&gt;
-          &lt;img src={viteLogo} className="logo" alt="Vite logo" /&gt;
-        &lt;/a&gt;
-        &lt;a href="https://reactjs.org" target="_blank"&gt;
-          &lt;img src={reactLogo} className="logo react" alt="React logo" /&gt;
-        &lt;/a&gt;
-      &lt;/div&gt;
-      &lt;h1&gt;Vite + React&lt;/h1&gt;
-      &lt;div className="card"&gt;
-        &lt;button onClick={() =&gt; setCount((count) =&gt; count + 1)}&gt;
-          count is {count}
-        &lt;/button&gt;
-        &lt;p&gt;
-          Edit &lt;code&gt;src/App.tsx&lt;/code&gt; and save to test HMR
-        &lt;/p&gt;
-      &lt;/div&gt;
-      &lt;p className="read-the-docs"&gt;
-        Click on the Vite and React logos to learn more
-      &lt;/p&gt;
-    &lt;/div&gt;
-  )
+export function ProductListHeader(props: ProductListHeaderProps) {
+	return (
+		&lt;HStack minWidth="full" alignItems="center" justifyContent="space-between"&gt;
+			&lt;Heading as="h3" size="xl" fontWeight="semibold" letterSpacing="wide"&gt;
+				Produtos
+			&lt;/Heading&gt;
+			&lt;HStack&gt;
+				&lt;IconButton
+					icon={&lt;RepeatClockIcon /&gt;}
+					colorScheme="green"
+					variant="outline"
+					aria-label="Mostrar histórico"
+				/&gt;
+				&lt;Button leftIcon={&lt;AddIcon /&gt;} colorScheme="green" onClick={props.openModal}&gt;
+					&lt;Text&gt;Adicionar produto&lt;/Text&gt;
+				&lt;/Button&gt;
+			&lt;/HStack&gt;
+		&lt;/HStack&gt;
+	);
 }
-&nbsp;
-export default App
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -175,16 +145,16 @@ export default App
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-03-31T00:35:32.145Z
+                at 2023-04-07T00:22:53.103Z
             </div>
-        <script src="prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="sorter.js"></script>
-        <script src="block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     
