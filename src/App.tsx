@@ -10,7 +10,7 @@ function App() {
 		<Box bgColor="gray.100" minHeight="100vh">
 			<AddProductModal isOpen={isOpen} onClose={onClose} />
 			<Header />
-			<ProductList openModal={onOpen}/>
+			<ProductList openModal={onOpen} />
 		</Box>
 	);
 }
