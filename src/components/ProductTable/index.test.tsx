@@ -1,7 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import { ProductTable, ProductTableItem } from "./index";
+import { ProductTable } from "./index";
+import { ProductDto } from "@/api/models/ProductDto";
+import { vi } from "vitest";
 
-const MOCK_PRODUCTS: ProductTableItem[] = [
+const MOCK_PRODUCTS: ProductDto[] = [
 	{
 		id: "001",
 		name: "T-shirt",
@@ -51,9 +53,10 @@ const MOCK_PRODUCTS: ProductTableItem[] = [
 
 describe("ProductTable", () => {
 	let rows: HTMLElement[];
+	const handleDelete = vi.fn();
 
 	beforeEach(() => {
-		render(<ProductTable data={MOCK_PRODUCTS} />);
+		render(<ProductTable data={MOCK_PRODUCTS} isLoading={false} onDelete={handleDelete} />);
 		rows = screen.getAllByRole("row");
 	});
 
