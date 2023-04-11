@@ -1,4 +1,5 @@
 import { ProductDto } from "@/api/models/ProductDto";
+import { ProductsService } from "@/api/services/ProductsService";
 import {
 	Modal,
 	ModalOverlay,
@@ -11,16 +12,14 @@ import {
 	FormControl,
 	FormLabel,
 	Input,
-	NumberDecrementStepper,
-	NumberIncrementStepper,
 	NumberInput,
 	NumberInputField,
-	NumberInputStepper,
 	InputGroup,
 	InputLeftElement,
 	Textarea,
 	Grid,
 	GridItem,
+	useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FormEvent } from "react";
@@ -39,18 +38,34 @@ const productInitialValue: ProductDto = {
 export function AddProductModal(props: AddProductModalProps) {
 	const [product, setProduct] = useState<ProductDto>(productInitialValue);
 	const [isLoading, setIsLoading] = useState(false);
+	const [errors, setErrors] = useState<string[]>([]);
+	const toast = useToast();
 
 	const handleAddProduct = async (e: FormEvent) => {
 		e.preventDefault();
 
+		const errors = ProductsService.validate(product);
+
+		if (errors.length > 0) {
+			errors.forEach(error => toast({ status: "error", title: error.message }));
+
+			setErrors(errors.map(error => error.name));
+
+			return;
+		}
+
 		setIsLoading(true);
 
-		await setTimeout(() => {
-			console.table(product);
-			setIsLoading(false);
-		}, 800);
+		try {
+			await ProductsService.create(product);
 
-		props.onClose();
+			toast({ status: "success", title: "Produto criado com sucesso." });
+			props.onClose();
+		} catch (e) {
+			toast({ status: "error", title: String(e) });
+		} finally {
+			setIsLoading(false);
+		}
 	};
 
 	const handleProductChange = (e: { target: { name: string; value: any } }) => {
@@ -74,7 +89,7 @@ export function AddProductModal(props: AddProductModalProps) {
 						gap={4}
 					>
 						<GridItem area="name">
-							<FormControl isRequired>
+							<FormControl isInvalid={errors.includes("name")}>
 								<FormLabel>Nome</FormLabel>
 								<Input
 									onChange={handleProductChange}
@@ -85,7 +100,7 @@ export function AddProductModal(props: AddProductModalProps) {
 						</GridItem>
 
 						<GridItem area="category">
-							<FormControl isRequired>
+							<FormControl isInvalid={errors.includes("category")}>
 								<FormLabel>Categoria</FormLabel>
 								<Input
 									onChange={handleProductChange}
@@ -96,7 +111,7 @@ export function AddProductModal(props: AddProductModalProps) {
 						</GridItem>
 
 						<GridItem area="description">
-							<FormControl isRequired>
+							<FormControl isInvalid={errors.includes("description")}>
 								<FormLabel>Descrição</FormLabel>
 								<Textarea
 									onChange={handleProductChange}
@@ -109,7 +124,7 @@ export function AddProductModal(props: AddProductModalProps) {
 						</GridItem>
 
 						<GridItem area="supplier">
-							<FormControl isRequired>
+							<FormControl isInvalid={errors.includes("supplier")}>
 								<FormLabel>Fornecedor</FormLabel>
 								<Input
 									onChange={handleProductChange}
@@ -120,7 +135,7 @@ export function AddProductModal(props: AddProductModalProps) {
 						</GridItem>
 
 						<GridItem area="unitPrice">
-							<FormControl isRequired>
+							<FormControl isInvalid={errors.includes("unitPrice")}>
 								<FormLabel>Valor unitário</FormLabel>
 								<NumberInput precision={2} min={0.01}>
 									<InputGroup>
@@ -137,14 +152,10 @@ export function AddProductModal(props: AddProductModalProps) {
 						</GridItem>
 
 						<GridItem area="amount">
-							<FormControl isRequired>
+							<FormControl isInvalid={errors.includes("amount")}>
 								<FormLabel>Quantidade</FormLabel>
 								<NumberInput min={1}>
 									<NumberInputField onChange={handleProductChange} name="amount" placeholder="0" />
-									<NumberInputStepper>
-										<NumberIncrementStepper />
-										<NumberDecrementStepper />
-									</NumberInputStepper>
 								</NumberInput>
 							</FormControl>
 						</GridItem>

@@ -1,5 +1,5 @@
 import { describe, expect, vi } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { AddProductModal } from "./index";
 
 describe("AddProductModal", () => {
@@ -60,5 +60,13 @@ describe("AddProductModal", () => {
 		fireEvent.click(closeButton);
 
 		expect(onClose).toHaveBeenCalledTimes(1);
+	});
+
+	it("saves new product on save button click", () => {
+		const submitButton = screen.getByRole("button", { name: "Salvar" });
+		const toast = vi.fn();
+
+		fireEvent.click(submitButton);
+		waitFor(() => expect(toast).toHaveBeenCalledWith({ status: "success", title: "Produto criado com sucesso." }));
 	});
 });
