@@ -1,18 +1,9 @@
 import { TableContainer, Table, Thead, Tr, Th, Tbody, Button, ButtonGroup, Td } from "@chakra-ui/react";
 import { useMask } from "@/hooks/useMask";
-
-export type ProductTableItem = {
-	id: string;
-	name: string;
-	description: string;
-	category: string;
-	amount: number;
-	unitPrice: number;
-	supplier: string;
-};
+import { ProductDto } from "@/api/models/ProductDto";
 
 type ProductTableProps = {
-	data: ProductTableItem[];
+	data: ProductDto[];
 };
 
 export function ProductTable({ data }: ProductTableProps) {
