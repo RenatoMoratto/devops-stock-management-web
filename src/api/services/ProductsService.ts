@@ -2,6 +2,7 @@ import { isAxiosError } from "axios";
 import { api } from "@/api/core/api";
 import { ProductDto } from "@/api/models/ProductDto";
 import { Error } from "@/api/models/Error";
+import { HistoricService } from "./HistoricService";
 
 export class ProductsService {
 	public static validate(product: ProductDto): Array<Error> {
@@ -50,6 +51,12 @@ export class ProductsService {
 		try {
 			const response = await api.post<ProductDto>("/products", data);
 
+			HistoricService.create({
+				productName: data.name,
+				amount: data.amount,
+				status: "CREATED",
+			});
+
 			return response.data;
 		} catch (error) {
 			if (isAxiosError(error)) {
@@ -61,7 +68,28 @@ export class ProductsService {
 
 	public static async update(data: ProductDto, id: string): Promise<ProductDto> {
 		try {
+			const { data: prevProduct } = await api.get<ProductDto>(`/products/${id}`);
 			const response = await api.put<ProductDto>(`/products/${id}`, data);
+
+			if (data.amount > prevProduct.amount) {
+				HistoricService.create({
+					productName: data.name,
+					amount: data.amount,
+					status: "UP",
+				});
+			} else if (data.amount < prevProduct.amount) {
+				HistoricService.create({
+					productName: data.name,
+					amount: data.amount,
+					status: "DOWN",
+				});
+			} else {
+				HistoricService.create({
+					productName: data.name,
+					amount: data.amount,
+					status: "EDITED",
+				});
+			}
 
 			return response.data;
 		} catch (error) {
@@ -74,7 +102,13 @@ export class ProductsService {
 
 	public static async delete(id: string): Promise<ProductDto> {
 		try {
+			const { data: prevProduct } = await api.get<ProductDto>(`/products/${id}`);
 			const response = await api.delete<ProductDto>(`/products/${id}`);
+
+			HistoricService.create({
+				productName: prevProduct.name,
+				status: "DELETED",
+			});
 
 			return response.data;
 		} catch (error) {
