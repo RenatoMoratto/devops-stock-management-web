@@ -1,9 +1,9 @@
 import { RepeatClockIcon, AddIcon } from "@chakra-ui/icons";
 import { HStack, Heading, Button, Text, IconButton } from "@chakra-ui/react";
 
-type ProductListHeaderProps = { openModal: () => void };
+type ProductHeaderProps = { openModal: () => void };
 
-export function ProductListHeader(props: ProductListHeaderProps) {
+export function ProductHeader(props: ProductHeaderProps) {
 	return (
 		<HStack minWidth="full" alignItems="center" justifyContent="space-between">
 			<Heading as="h3" size="xl" fontWeight="semibold" letterSpacing="wide">

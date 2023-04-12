@@ -8,26 +8,40 @@ import {
 	Button,
 	ButtonGroup,
 	Td,
-	useToast,
 	Spinner,
 	Center,
+	useToast,
 } from "@chakra-ui/react";
 import { useMask } from "@/hooks/useMask";
 import { ProductDto } from "@/api/models/ProductDto";
+import { ProductsService } from "@/api/services/ProductsService";
 
 type ProductTableProps = {
 	data: ProductDto[];
 	isLoading: boolean;
-	onDelete: (id: string) => Promise<void>;
+	fetchProducts: () => void;
 };
 
-export function ProductTable({ isLoading, data, onDelete }: ProductTableProps) {
+export function ProductTable({ isLoading, data, fetchProducts }: ProductTableProps) {
 	const mask = useMask();
+	const toast = useToast();
+
+	const handleDeleteProduct = async (productId: string) => {
+		try {
+			await ProductsService.delete(productId);
+
+			toast({ status: "success", title: "Produto excluído com sucesso." });
+
+			fetchProducts();
+		} catch (e) {
+			toast({ status: "error", title: String(e) });
+		}
+	};
 
 	return (
-		<TableContainer minWidth="full">
+		<TableContainer minWidth="full" overflowY="auto" maxHeight="2xl">
 			<Table variant="striped" colorScheme="blackAlpha">
-				<Thead>
+				<Thead position="sticky" top={0} bgColor="gray.100">
 					<Tr>
 						<Th>Nome</Th>
 						<Th>Descrição</Th>
@@ -52,7 +66,9 @@ export function ProductTable({ isLoading, data, onDelete }: ProductTableProps) {
 						data.map(item => (
 							<Tr key={item.id}>
 								<Td>{item.name}</Td>
-								<Td>{item.description}</Td>
+								<Td maxWidth="sm" overflowX="clip" textOverflow="ellipsis">
+									{item.description}
+								</Td>
 								<Td>{item.category}</Td>
 								<Td isNumeric>{item.amount}</Td>
 								<Td isNumeric>{mask.toBRL(item.unitPrice)}</Td>
@@ -66,7 +82,7 @@ export function ProductTable({ isLoading, data, onDelete }: ProductTableProps) {
 											size="sm"
 											colorScheme="red"
 											variant="outline"
-											onClick={() => onDelete(item.id!)}
+											onClick={() => handleDeleteProduct(item.id!)}
 										>
 											Excluir
 										</Button>

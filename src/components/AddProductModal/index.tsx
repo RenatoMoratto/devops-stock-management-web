@@ -24,7 +24,11 @@ import {
 import { useState } from "react";
 import { FormEvent } from "react";
 
-type AddProductModalProps = { isOpen: boolean; onClose: () => void };
+type AddProductModalProps = {
+	isOpen: boolean;
+	onClose: () => void;
+	fetchProducts: () => void;
+};
 
 const productInitialValue: ProductDto = {
 	name: "",
@@ -60,6 +64,7 @@ export function AddProductModal(props: AddProductModalProps) {
 			await ProductsService.create(product);
 
 			toast({ status: "success", title: "Produto criado com sucesso." });
+			props.fetchProducts();
 			props.onClose();
 		} catch (e) {
 			toast({ status: "error", title: String(e) });

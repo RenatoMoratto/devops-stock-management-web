@@ -1,13 +1,13 @@
 import { describe, expect } from "vitest";
 import { fireEvent, render, screen } from "@testing-library/react";
-import { ProductListHeader } from "./index";
+import { ProductHeader } from "./index";
 
 describe("ProductListHeader", () => {
 	let clickOpenButton = false;
 
 	beforeEach(() => {
 		render(
-			<ProductListHeader
+			<ProductHeader
 				openModal={() => {
 					clickOpenButton = !clickOpenButton;
 				}}

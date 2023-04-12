@@ -56,7 +56,7 @@ describe("ProductTable", () => {
 	const handleDelete = vi.fn();
 
 	beforeEach(() => {
-		render(<ProductTable data={MOCK_PRODUCTS} isLoading={false} onDelete={handleDelete} />);
+		render(<ProductTable data={MOCK_PRODUCTS} isLoading={false} fetchProducts={handleDelete} />);
 		rows = screen.getAllByRole("row");
 	});
 
