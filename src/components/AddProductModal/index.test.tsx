@@ -4,9 +4,10 @@ import { AddProductModal } from "./index";
 
 describe("AddProductModal", () => {
 	const onClose = vi.fn();
+	const fetchProducts = vi.fn();
 
 	beforeEach(() => {
-		render(<AddProductModal isOpen={true} onClose={onClose} />);
+		render(<AddProductModal isOpen={true} onClose={onClose} fetchProducts={fetchProducts} />);
 	});
 
 	it("renders the correct title", () => {
@@ -21,8 +22,8 @@ describe("AddProductModal", () => {
 			name: "",
 			description: "",
 			category: "",
-			amount: "",
-			unitPrice: "",
+			amount: "0",
+			unitPrice: "0",
 			supplier: "",
 		});
 	});

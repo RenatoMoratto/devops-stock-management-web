@@ -26,7 +26,7 @@ export class ProductsService {
 		}
 		if (!product.unitPrice) {
 			errors.push({ name: "unitPrice", message: "O valor unitário é obrigatório." });
-		} else if (product.amount <= 0) {
+		} else if (product.unitPrice <= 0) {
 			errors.push({ name: "unitPrice", message: "O valor unitário deve conter um valor maior que 0(zero)." });
 		}
 
