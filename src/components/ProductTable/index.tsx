@@ -11,10 +11,13 @@ import {
 	Spinner,
 	Center,
 	useToast,
+	useDisclosure,
 } from "@chakra-ui/react";
 import { useMask } from "@/hooks/useMask";
 import { ProductDto } from "@/api/models/ProductDto";
 import { ProductsService } from "@/api/services/ProductsService";
+import { useState } from "react";
+import { EditProductModal } from "../EditProductModal";
 
 type ProductTableProps = {
 	data: ProductDto[];
@@ -23,6 +26,10 @@ type ProductTableProps = {
 };
 
 export function ProductTable({ isLoading, data, fetchProducts }: ProductTableProps) {
+	const [productIndex, setProductIndex] = useState<number>(0);
+
+	const { isOpen, onOpen, onClose } = useDisclosure();
+
 	const mask = useMask();
 	const toast = useToast();
 
@@ -38,60 +45,78 @@ export function ProductTable({ isLoading, data, fetchProducts }: ProductTablePro
 		}
 	};
 
+	const handleEditProductClick = async (productIndex: number) => {
+		setProductIndex(productIndex);
+		onOpen();
+	};
+
 	return (
-		<TableContainer minWidth="full" overflowY="auto" maxHeight="2xl">
-			<Table variant="striped" colorScheme="blackAlpha">
-				<Thead position="sticky" top={0} bgColor="gray.100">
-					<Tr>
-						<Th>Nome</Th>
-						<Th>Descrição</Th>
-						<Th>Categoria</Th>
-						<Th isNumeric>Quantidade</Th>
-						<Th isNumeric>Valor unitário</Th>
-						<Th>Fornecedor</Th>
-						<Th></Th>
-					</Tr>
-				</Thead>
-				<Tbody>
-					{isLoading && (
+		<>
+			<EditProductModal
+				isOpen={isOpen}
+				onClose={onClose}
+				product={data[productIndex]}
+				fetchProducts={fetchProducts}
+			/>
+			<TableContainer minWidth="full" overflowY="auto" maxHeight="2xl">
+				<Table variant="striped" colorScheme="blackAlpha">
+					<Thead position="sticky" top={0} bgColor="gray.100">
 						<Tr>
-							<Td colSpan={7}>
-								<Center>
-									<Spinner size="xl" />
-								</Center>
-							</Td>
+							<Th>Nome</Th>
+							<Th>Descrição</Th>
+							<Th>Categoria</Th>
+							<Th isNumeric>Quantidade</Th>
+							<Th isNumeric>Valor unitário</Th>
+							<Th>Fornecedor</Th>
+							<Th></Th>
 						</Tr>
-					)}
-					{!isLoading &&
-						data.map(item => (
-							<Tr key={item.id}>
-								<Td>{item.name}</Td>
-								<Td maxWidth="sm" overflowX="clip" textOverflow="ellipsis">
-									{item.description}
-								</Td>
-								<Td>{item.category}</Td>
-								<Td isNumeric>{item.amount}</Td>
-								<Td isNumeric>{mask.toBRL(item.unitPrice)}</Td>
-								<Td>{item.supplier}</Td>
-								<Td>
-									<ButtonGroup spacing="2">
-										<Button size="sm" colorScheme="green" variant="outline">
-											Editar
-										</Button>
-										<Button
-											size="sm"
-											colorScheme="red"
-											variant="outline"
-											onClick={() => handleDeleteProduct(item.id!)}
-										>
-											Excluir
-										</Button>
-									</ButtonGroup>
+					</Thead>
+					<Tbody>
+						{isLoading && (
+							<Tr>
+								<Td colSpan={7}>
+									<Center>
+										<Spinner size="xl" />
+									</Center>
 								</Td>
 							</Tr>
-						))}
-				</Tbody>
-			</Table>
-		</TableContainer>
+						)}
+						{!isLoading &&
+							data.map((item, index) => (
+								<Tr key={item.id}>
+									<Td>{item.name}</Td>
+									<Td maxWidth="sm" overflowX="clip" textOverflow="ellipsis">
+										{item.description}
+									</Td>
+									<Td>{item.category}</Td>
+									<Td isNumeric>{item.amount}</Td>
+									<Td isNumeric>{mask.toBRL(item.unitPrice)}</Td>
+									<Td>{item.supplier}</Td>
+									<Td>
+										<ButtonGroup spacing="2">
+											<Button
+												size="sm"
+												colorScheme="green"
+												variant="outline"
+												onClick={() => handleEditProductClick(index)}
+											>
+												Editar
+											</Button>
+											<Button
+												size="sm"
+												colorScheme="red"
+												variant="outline"
+												onClick={() => handleDeleteProduct(item.id!)}
+											>
+												Excluir
+											</Button>
+										</ButtonGroup>
+									</Td>
+								</Tr>
+							))}
+					</Tbody>
+				</Table>
+			</TableContainer>
+		</>
 	);
 }
