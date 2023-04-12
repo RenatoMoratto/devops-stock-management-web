@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/ProductListHeader/index.tsx</title>
+    <title>Code coverage report for src/components/CustomTable/index.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,20 +19,20 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/ProductListHeader</a> index.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/CustomTable</a> index.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>32/32</span>
             </div>
         
             
@@ -89,56 +89,74 @@
 <a name='L24'></a><a href='#L24'>24</a>
 <a name='L25'></a><a href='#L25'>25</a>
 <a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L27'></a><a href='#L27'>27</a>
+<a name='L28'></a><a href='#L28'>28</a>
+<a name='L29'></a><a href='#L29'>29</a>
+<a name='L30'></a><a href='#L30'>30</a>
+<a name='L31'></a><a href='#L31'>31</a>
+<a name='L32'></a><a href='#L32'>32</a>
+<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RepeatClockIcon, AddIcon } from "@chakra-ui/icons";
-import { HStack, Heading, Button, Text, IconButton } from "@chakra-ui/react";
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { TableContainer, Table, Thead, Th, Tr, Tbody, Td, Spinner, Center, Icon, HStack } from "@chakra-ui/react";
 &nbsp;
-type ProductHeaderProps = { openModal: () =&gt; void; openDrawer: () =&gt; void };
+type CustomTableProps = {
+	isLoading: boolean;
+	head: JSX.Element;
+	rows: JSX.Element[];
+};
 &nbsp;
-export function ProductHeader(props: ProductHeaderProps) {
+export function CustomTable({ isLoading = false, head, rows }: CustomTableProps) {
+	console.log(head);
 	return (
-		&lt;HStack minWidth="full" alignItems="center" justifyContent="space-between"&gt;
-			&lt;Heading as="h3" size="xl" fontWeight="semibold" letterSpacing="wide"&gt;
-				Produtos
-			&lt;/Heading&gt;
-			&lt;HStack&gt;
-				&lt;IconButton
-					onClick={props.openDrawer}
-					icon={&lt;RepeatClockIcon /&gt;}
-					colorScheme="green"
-					variant="outline"
-					aria-label="Mostrar histórico"
-				/&gt;
-				&lt;Button leftIcon={&lt;AddIcon /&gt;} colorScheme="green" onClick={props.openModal}&gt;
-					&lt;Text&gt;Adicionar produto&lt;/Text&gt;
-				&lt;/Button&gt;
-			&lt;/HStack&gt;
-		&lt;/HStack&gt;
+		&lt;TableContainer minWidth="full" overflowY="auto" maxHeight="4xl"&gt;
+			&lt;Table variant="striped" colorScheme="blackAlpha"&gt;
+				&lt;Thead position="sticky" top={0} bgColor="gray.100"&gt;
+					{head}
+				&lt;/Thead&gt;
+				&lt;Tbody&gt;
+					{isLoading &amp;&amp; (
+						&lt;Tr&gt;
+							&lt;Td colSpan={7}&gt;
+								&lt;Center&gt;
+									&lt;Spinner size="xl" /&gt;
+								&lt;/Center&gt;
+							&lt;/Td&gt;
+						&lt;/Tr&gt;
+					)}
+					{!isLoading &amp;&amp; rows}
+				&lt;/Tbody&gt;
+			&lt;/Table&gt;
+		&lt;/TableContainer&gt;
 	);
 }
 &nbsp;</pre></td></tr></table></pre>
