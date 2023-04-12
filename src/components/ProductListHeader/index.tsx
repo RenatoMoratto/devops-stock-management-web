@@ -1,7 +1,7 @@
 import { RepeatClockIcon, AddIcon } from "@chakra-ui/icons";
 import { HStack, Heading, Button, Text, IconButton } from "@chakra-ui/react";
 
-type ProductHeaderProps = { openModal: () => void };
+type ProductHeaderProps = { openModal: () => void; openDrawer: () => void };
 
 export function ProductHeader(props: ProductHeaderProps) {
 	return (
@@ -11,6 +11,7 @@ export function ProductHeader(props: ProductHeaderProps) {
 			</Heading>
 			<HStack>
 				<IconButton
+					onClick={props.openDrawer}
 					icon={<RepeatClockIcon />}
 					colorScheme="green"
 					variant="outline"
