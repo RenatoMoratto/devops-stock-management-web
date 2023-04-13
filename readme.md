@@ -1,8 +1,14 @@
-
 # DevOps Stock Management Web
 
 Web front for a stock management system, made to practice the main DevOps concepts
 
+## Tech Stack
+
+-   [Vite](https://vitejs.dev/)
+-   [React](https://react.dev/)
+-   [Chakra UI](https://chakra-ui.com/)
+-   [Vitest](https://vitest.dev/)
+-   [Axios](https://axios-http.com/ptbr/docs/intro)
 
 ## Run Locally
 
@@ -30,6 +36,19 @@ Start the server
   yarn run dev
 ```
 
+## Running Tests
+
+To run tests, run the following command
+
+```bash
+  yarn test
+```
+
+For test coverage, use
+
+```bash
+  yarn coverage
+```
 
 ## Authors
 
