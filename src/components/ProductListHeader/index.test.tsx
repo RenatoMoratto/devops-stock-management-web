@@ -11,6 +11,7 @@ describe("ProductListHeader", () => {
 				openModal={() => {
 					clickOpenButton = !clickOpenButton;
 				}}
+				openDrawer={() => {}}
 			/>
 		);
 	});

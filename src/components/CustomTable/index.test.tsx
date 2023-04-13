@@ -16,7 +16,7 @@ describe("CustomTable", () => {
 				isLoading={false}
 				head={<></>}
 				rows={[
-					<Tr>
+					<Tr key={1}>
 						<Td>Row</Td>
 					</Tr>,
 				]}
@@ -46,11 +46,11 @@ describe("CustomTable", () => {
 
 	it("renders table rows correctly", () => {
 		const rows = [
-			<Tr>
+			<Tr key={1}>
 				<Td>Row 1, Column 1</Td>
 				<Td>Row 1, Column 2</Td>
 			</Tr>,
-			<Tr>
+			<Tr key={2}>
 				<Td>Row 2, Column 1</Td>
 				<Td>Row 2, Column 2</Td>
 			</Tr>,

@@ -27,8 +27,10 @@ describe("HistoricTable", () => {
 
 	vi.spyOn(HistoricService, "getAll").mockResolvedValueOnce(mockHistoric);
 
-	beforeEach(() => {
-		act(() => render(<HistoricTable />));
+	beforeEach(async () => {
+		await act(async () => {
+			render(<HistoricTable />);
+		});
 	});
 
 	it("renders the correct header data", () => {
