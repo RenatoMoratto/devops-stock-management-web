@@ -6,12 +6,13 @@ import { ProductDto } from "./api/models/ProductDto";
 import { ProductsService } from "./api/services/ProductsService";
 import { ProductHeader } from "./components/ProductListHeader";
 import { ProductTable } from "./components/ProductTable";
+import { HistoricDrawer } from "./components/HistoricDrawer";
 
 function App() {
 	const [productList, setProductList] = useState<ProductDto[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
-
-	const { isOpen, onOpen, onClose } = useDisclosure();
+	const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
+	const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();
 
 	const toast = useToast();
 
@@ -33,10 +34,11 @@ function App() {
 
 	return (
 		<Box bgColor="gray.100" minHeight="100vh">
-			<AddProductModal isOpen={isOpen} onClose={onClose} fetchProducts={fetchProducts} />
+			<HistoricDrawer isOpen={isDrawerOpen} onClose={onDrawerClose} />
+			<AddProductModal isOpen={isModalOpen} onClose={onModalClose} fetchProducts={fetchProducts} />
 			<Header />
 			<VStack paddingY="1.5rem" paddingX="3rem" gap="1.5rem">
-				<ProductHeader openModal={onOpen} />
+				<ProductHeader openModal={onModalOpen} openDrawer={onDrawerOpen} />
 				<ProductTable isLoading={isLoading} data={productList} fetchProducts={fetchProducts} />
 			</VStack>
 		</Box>

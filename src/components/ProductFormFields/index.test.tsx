@@ -1,6 +1,6 @@
-import { describe, expect } from "vitest";
-import { fireEvent, render, screen } from "@testing-library/react";
-import { ProductFormFields } from "./index";
+import { describe, expect, vi } from "vitest";
+import { act, fireEvent, render, screen } from "@testing-library/react";
+import { ProductFormFields, ProductFormRefType } from "./index";
 
 const productInitialValue = {
 	id: undefined,
@@ -12,16 +12,23 @@ const productInitialValue = {
 	supplier: "",
 };
 
+const product = {
+	name: "T-shirt",
+	description: "Cotton T-shirt for everyday use",
+	category: "Clothing",
+	amount: 100,
+	unitPrice: 15.99,
+	supplier: "ABC Clothing Co.",
+};
+
 describe("ProductFormFields", () => {
-	beforeEach(() => {
+	it("renders the correct fields with initial values ", () => {
 		render(
 			<form data-testid="product-form-fields">
 				<ProductFormFields initialValue={productInitialValue} />
 			</form>
 		);
-	});
 
-	it("renders the correct fields with initial values ", () => {
 		const fieldset = screen.getByTestId("product-form-fields");
 
 		expect(fieldset).toHaveFormValues({
@@ -35,6 +42,12 @@ describe("ProductFormFields", () => {
 	});
 
 	it("update form field values ", () => {
+		render(
+			<form data-testid="product-form-fields">
+				<ProductFormFields initialValue={productInitialValue} />
+			</form>
+		);
+
 		const nameInput = screen.getByRole("textbox", { name: "Nome" });
 		const descriptionInput = screen.getByRole("textbox", { name: "Descrição" });
 		const categoryInput = screen.getByRole("textbox", { name: "Categoria" });
@@ -42,22 +55,22 @@ describe("ProductFormFields", () => {
 		const unitPriceInput = screen.getByRole("spinbutton", { name: "Valor unitário" });
 		const supplierInput = screen.getByRole("textbox", { name: "Fornecedor" });
 
-		fireEvent.change(nameInput, { target: { value: "T-shirt" } });
-		fireEvent.change(descriptionInput, { target: { value: "Cotton T-shirt for everyday use" } });
-		fireEvent.change(categoryInput, { target: { value: "Clothing" } });
-		fireEvent.change(amountInput, { target: { value: 100 } });
-		fireEvent.change(unitPriceInput, { target: { value: 15.99 } });
-		fireEvent.change(supplierInput, { target: { value: "ABC Clothing Co." } });
+		fireEvent.change(nameInput, { target: { value: product.name } });
+		fireEvent.change(descriptionInput, { target: { value: product.description } });
+		fireEvent.change(categoryInput, { target: { value: product.category } });
+		fireEvent.change(amountInput, { target: { value: product.amount } });
+		fireEvent.change(unitPriceInput, { target: { value: product.unitPrice } });
+		fireEvent.change(supplierInput, { target: { value: product.supplier } });
 
 		const fieldset = screen.getByTestId("product-form-fields");
 
 		expect(fieldset).toHaveFormValues({
-			name: "T-shirt",
-			description: "Cotton T-shirt for everyday use",
-			category: "Clothing",
-			amount: "100",
-			unitPrice: "15.99",
-			supplier: "ABC Clothing Co.",
+			name: product.name,
+			description: product.description,
+			category: product.category,
+			amount: String(product.amount),
+			unitPrice: String(product.unitPrice),
+			supplier: product.supplier,
 		});
 	});
 });

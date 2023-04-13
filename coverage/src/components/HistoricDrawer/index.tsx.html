@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for src/components/ProductListHeader/index.tsx</title>
+    <title>Code coverage report for src/components/HistoricDrawer/index.tsx</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/ProductListHeader</a> index.tsx</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">src/components/HistoricDrawer</a> index.tsx</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>26/26</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -85,60 +85,48 @@
 <a name='L20'></a><a href='#L20'>20</a>
 <a name='L21'></a><a href='#L21'>21</a>
 <a name='L22'></a><a href='#L22'>22</a>
-<a name='L23'></a><a href='#L23'>23</a>
-<a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
+<a name='L23'></a><a href='#L23'>23</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { RepeatClockIcon, AddIcon } from "@chakra-ui/icons";
-import { HStack, Heading, Button, Text, IconButton } from "@chakra-ui/react";
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerHeader, DrawerOverlay } from "@chakra-ui/react";
+import { HistoricTable } from "@/components/HistoricTable";
 &nbsp;
-type ProductHeaderProps = { openModal: () =&gt; void; openDrawer: () =&gt; void };
+type HistoricDrawerProps = {
+	isOpen: boolean;
+	onClose: () =&gt; void;
+};
 &nbsp;
-export function ProductHeader(props: ProductHeaderProps) {
+export function HistoricDrawer(props: HistoricDrawerProps) {
 	return (
-		&lt;HStack minWidth="full" alignItems="center" justifyContent="space-between"&gt;
-			&lt;Heading as="h3" size="xl" fontWeight="semibold" letterSpacing="wide"&gt;
-				Produtos
-			&lt;/Heading&gt;
-			&lt;HStack&gt;
-				&lt;IconButton
-					onClick={props.openDrawer}
-					icon={&lt;RepeatClockIcon /&gt;}
-					colorScheme="green"
-					variant="outline"
-					aria-label="Mostrar histórico"
-				/&gt;
-				&lt;Button leftIcon={&lt;AddIcon /&gt;} colorScheme="green" onClick={props.openModal}&gt;
-					&lt;Text&gt;Adicionar produto&lt;/Text&gt;
-				&lt;/Button&gt;
-			&lt;/HStack&gt;
-		&lt;/HStack&gt;
+		&lt;Drawer size="md" {...props}&gt;
+			&lt;DrawerOverlay /&gt;
+			&lt;DrawerContent&gt;
+				&lt;DrawerHeader&gt;Histórico&lt;/DrawerHeader&gt;
+				&lt;DrawerCloseButton /&gt;
+				&lt;DrawerBody&gt;
+					&lt;HistoricTable /&gt;
+				&lt;/DrawerBody&gt;
+			&lt;/DrawerContent&gt;
+		&lt;/Drawer&gt;
 	);
 }
 &nbsp;</pre></td></tr></table></pre>

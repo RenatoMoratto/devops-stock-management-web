@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductTable } from "./index";
 import { ProductDto } from "@/api/models/ProductDto";
 import { vi } from "vitest";
+import { ProductsService } from "@/api/services/ProductsService";
 
 const MOCK_PRODUCTS: ProductDto[] = [
 	{
@@ -87,6 +88,58 @@ describe("ProductTable", () => {
 			expect(unitPrice).toHaveTextContent(`R$ ${item.unitPrice.toFixed(2).replace(".", ",")}`);
 			expect(supplier).toHaveTextContent(item.supplier);
 			expect(actions).toBeInTheDocument();
+		});
+	});
+
+	it("remove row after delete product", async () => {
+		const [name, description, category, amount, unitPrice, supplier, actions] = rows[1].querySelectorAll("td");
+		const deleteButton = screen.getAllByRole("button", { name: /Excluir/ });
+
+		fireEvent.click(deleteButton[0]);
+
+		waitFor(() => {
+			expect(name).not.toBeInTheDocument();
+			expect(description).not.toBeInTheDocument();
+			expect(category).not.toBeInTheDocument();
+			expect(amount).not.toBeInTheDocument();
+			expect(unitPrice).not.toBeInTheDocument();
+			expect(supplier).not.toBeInTheDocument();
+			expect(actions).not.toBeInTheDocument();
+		});
+	});
+
+	it("handle delete error by showing a toast", async () => {
+		const error = new Error("Failed to delete product");
+
+		vi.spyOn(ProductsService, "delete").mockRejectedValueOnce(error);
+
+		const deleteButton = screen.getAllByRole("button", { name: /Excluir/ });
+
+		fireEvent.click(deleteButton[0]);
+
+		const errorToast = await document.querySelector("");
+		expect(errorToast).toBeInTheDocument();
+	});
+
+	it("renders modal with row content on edit", async () => {
+		const editButton = screen.getAllByRole("button", { name: /Editar/ });
+
+		fireEvent.click(editButton[0]);
+
+		waitFor(() => {
+			const modalTitle = screen.getByText("Editar produto");
+			expect(modalTitle).toBeInTheDocument();
+
+			const form = screen.getByTestId("edit-product-form");
+
+			expect(form).toHaveFormValues({
+				name: MOCK_PRODUCTS[0].name,
+				description: MOCK_PRODUCTS[0].description,
+				category: MOCK_PRODUCTS[0].category,
+				amount: String(MOCK_PRODUCTS[0].amount),
+				unitPrice: String(MOCK_PRODUCTS[0].unitPrice),
+				supplier: MOCK_PRODUCTS[0].supplier,
+			});
 		});
 	});
 });
