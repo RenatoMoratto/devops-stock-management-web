@@ -4,6 +4,7 @@ import { ProductsService } from "@/api/services/ProductsService";
 import { api } from "../core/api";
 import { vi } from "vitest";
 import { AxiosError } from "axios";
+import { HistoricService } from "../services/HistoricService";
 
 const product: ProductDto = {
 	name: "Product",
@@ -93,7 +94,7 @@ describe("ProductsService", () => {
 			expect(result).toEqual(products);
 		});
 
-		it("should throw an axios error if the request fails with axios error", async () => {
+		it("should re-throw AxiosError on failure", async () => {
 			vi.spyOn(api, "get").mockRejectedValueOnce(new AxiosError("Failed to get products"));
 
 			await expect(ProductsService.getAll()).rejects.toThrow("Failed to get products");
@@ -129,7 +130,7 @@ describe("ProductsService", () => {
 			await expect(ProductsService.create(product)).rejects.toThrow("Erro ao salvar produto");
 		});
 
-		it("should throw an axios error if the request fails with axios error", async () => {
+		it("should re-throw AxiosError on failure", async () => {
 			vi.spyOn(api, "post").mockRejectedValueOnce(new AxiosError("Failed to get products"));
 
 			await expect(ProductsService.create(product)).rejects.toThrow("Failed to get products");
@@ -159,8 +160,57 @@ describe("ProductsService", () => {
 			expect(updatedProduct).toEqual(updatedProductData);
 		});
 
-		it("should throw an axios error if the request fails with axios error", async () => {
-            vi.spyOn(api, "get").mockResolvedValueOnce(product);
+		it("should create historic with UP status", async () => {
+			const previousProductData = {
+				id: productId,
+				...product,
+			};
+			const updatedProductData = {
+				id: productId,
+				...product,
+				amount: product.amount + 10,
+			};
+
+			vi.spyOn(api, "get").mockResolvedValueOnce({ data: previousProductData });
+			vi.spyOn(api, "put").mockResolvedValueOnce({ data: updatedProductData });
+			vi.spyOn(HistoricService, "create");
+
+			await ProductsService.update(updatedProductData, productId);
+
+			expect(HistoricService.create).toBeCalledWith({
+				productName: updatedProductData.name,
+				amount: updatedProductData.amount,
+				status: "UP",
+			});
+		});
+
+		it("should create historic with DOWN status", async () => {
+			const previousProductData = {
+				id: productId,
+				...product,
+				amount: product.amount + 10,
+			};
+			const updatedProductData = {
+				id: productId,
+				...product,
+			};
+
+			vi.spyOn(api, "get").mockResolvedValueOnce({ data: previousProductData });
+			vi.spyOn(api, "put").mockResolvedValueOnce({ data: updatedProductData });
+			vi.spyOn(HistoricService, "create");
+
+			await ProductsService.update(updatedProductData, productId);
+
+			expect(HistoricService.create).toBeCalledWith({
+				productName: updatedProductData.name,
+				amount: updatedProductData.amount,
+				status: "DOWN",
+			});
+		});
+
+
+		it("should re-throw AxiosError on failure", async () => {
+			vi.spyOn(api, "get").mockResolvedValueOnce(product);
 			vi.spyOn(api, "put").mockRejectedValueOnce(new AxiosError("Failed to get products"));
 
 			await expect(ProductsService.update(product, productId)).rejects.toThrow("Failed to get products");
@@ -171,6 +221,38 @@ describe("ProductsService", () => {
 			vi.spyOn(api, "put").mockRejectedValueOnce(new Error("API error"));
 
 			await expect(ProductsService.update(product, productId)).rejects.toThrowError("Erro ao editar produto");
+		});
+	});
+
+	describe("delete", () => {
+		const productId = "123456";
+
+		it("should delete an existing product", async () => {
+			const deletedProductData = {
+				id: productId,
+				...product,
+			};
+
+			vi.spyOn(api, "get").mockResolvedValueOnce({ data: deletedProductData });
+			vi.spyOn(api, "delete").mockResolvedValueOnce({ data: deletedProductData });
+
+			const updatedProduct = await ProductsService.delete(productId);
+
+			expect(updatedProduct).toEqual(deletedProductData);
+		});
+
+		it("should re-throw AxiosError on failure", async () => {
+			vi.spyOn(api, "get").mockResolvedValueOnce(product);
+			vi.spyOn(api, "delete").mockRejectedValueOnce(new AxiosError("Failed to get products"));
+
+			await expect(ProductsService.delete(productId)).rejects.toThrow("Failed to get products");
+		});
+
+		it("should throw an error when updating a product fails", async () => {
+			vi.spyOn(api, "get").mockResolvedValueOnce(product);
+			vi.spyOn(api, "delete").mockRejectedValueOnce(new Error("API error"));
+
+			await expect(ProductsService.delete(productId)).rejects.toThrowError("Erro ao excluir produto");
 		});
 	});
 });
