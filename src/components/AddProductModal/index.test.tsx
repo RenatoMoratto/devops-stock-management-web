@@ -1,6 +1,16 @@
 import { describe, expect, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { AddProductModal } from "./index";
+import { ProductsService } from "@/api/services/ProductsService";
+
+const product = {
+	name: "T-shirt",
+	description: "Cotton T-shirt for everyday use",
+	category: "Clothing",
+	amount: 100,
+	unitPrice: 15.99,
+	supplier: "ABC Clothing Co.",
+};
 
 describe("AddProductModal", () => {
 	const onClose = vi.fn();
@@ -45,14 +55,7 @@ describe("AddProductModal", () => {
 
 		const form = screen.getByTestId("add-product-form");
 
-		expect(form).toHaveFormValues({
-			name: "T-shirt",
-			description: "Cotton T-shirt for everyday use",
-			category: "Clothing",
-			amount: "100",
-			unitPrice: "15.99",
-			supplier: "ABC Clothing Co.",
-		});
+		expect(form).toHaveFormValues({ ...product, amount: "100", unitPrice: "15.99" });
 	});
 
 	it("closes on close button click", () => {
@@ -69,5 +72,36 @@ describe("AddProductModal", () => {
 
 		fireEvent.click(submitButton);
 		waitFor(() => expect(toast).toHaveBeenCalledWith({ status: "success", title: "Produto criado com sucesso." }));
+	});
+
+	it("should show error message if submit fails", async () => {
+		const errorMessage = "Create failed";
+
+		vi.spyOn(ProductsService, "create").mockRejectedValueOnce(new Error(errorMessage));
+
+		fireEvent.submit(screen.getByTestId("add-product-form"));
+
+		waitFor(() => {
+			expect(ProductsService.create).toHaveBeenCalledWith(product);
+			expect(screen.getByText(errorMessage)).toBeInTheDocument();
+		});
+	});
+
+	it("should not call handleEditProduct when form is invalid", async () => {
+		vi.spyOn(ProductsService, "create").mockResolvedValueOnce(product);
+
+		const nameInput = screen.getByRole("textbox", { name: "Nome" });
+
+		fireEvent.change(nameInput, { target: { value: "" } });
+
+		const submitButton = screen.getByRole("button", { name: "Salvar" });
+
+		fireEvent.click(submitButton);
+
+		waitFor(() => {
+			expect(ProductsService.create).not.toHaveBeenCalledWith({ product, name: "" });
+			expect(fetchProducts).not.toHaveBeenCalled();
+			expect(onClose).not.toHaveBeenCalled();
+		});
 	});
 });

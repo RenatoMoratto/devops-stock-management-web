@@ -1,6 +1,7 @@
 import { describe, expect, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { EditProductModal } from "./index";
+import { ProductsService } from "@/api/services/ProductsService";
 
 const productInitialValue = {
 	id: undefined,
@@ -86,5 +87,70 @@ describe("AddProductModal", () => {
 
 		fireEvent.click(submitButton);
 		waitFor(() => expect(toast).toHaveBeenCalledWith({ status: "success", title: "Produto criado com sucesso." }));
+	});
+
+	it("closes after submit the form", async () => {
+		const submitButton = screen.getByRole("button", { name: /salvar/i });
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+
+		fireEvent.click(submitButton);
+
+		waitFor(() => expect(onClose).toHaveBeenCalledOnce());
+	});
+
+	test("should update a product on submit", () => {
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+
+		fireEvent.submit(screen.getByTestId("edit-product-form"));
+
+		waitFor(() => {
+			expect(ProductsService.update).toHaveBeenCalledWith(productInitialValue, productInitialValue.id);
+			expect(fetchProducts).toHaveBeenCalled();
+			expect(onClose).toHaveBeenCalled();
+		});
+	});
+
+	it("renders loading while submitting the form", async () => {
+		const submitButton = screen.getByRole("button", { name: /salvar/i });
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+
+		fireEvent.click(submitButton);
+
+		waitFor(() => {
+			expect(submitButton).toBeDisabled();
+		});
+	});
+
+	it("should show error message if submit fails", async () => {
+		const errorMessage = "Update failed";
+
+		vi.spyOn(ProductsService, "update").mockRejectedValueOnce(new Error(errorMessage));
+
+		fireEvent.submit(screen.getByTestId("edit-product-form"));
+
+		waitFor(() => {
+			expect(ProductsService.update).toHaveBeenCalledWith(productInitialValue, productInitialValue.id);
+			expect(screen.getByText(errorMessage)).toBeInTheDocument();
+		});
+	});
+
+	it("should not call handleEditProduct when form is invalid", async () => {
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+		const nameInput = screen.getByRole("textbox", { name: "Nome" });
+
+		fireEvent.change(nameInput, { target: { value: "" } });
+
+		const submitButton = screen.getByRole("button", { name: "Salvar" });
+
+		fireEvent.click(submitButton);
+
+		waitFor(() => {
+			expect(ProductsService.update).not.toHaveBeenCalledWith(
+				{ ...productInitialValue, name: "" },
+				productInitialValue.id
+			);
+			expect(fetchProducts).not.toHaveBeenCalled();
+			expect(onClose).not.toHaveBeenCalled();
+		});
 	});
 });
