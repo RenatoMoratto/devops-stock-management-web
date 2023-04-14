@@ -1,12 +1,12 @@
 import { isAxiosError } from "axios";
 import { api } from "@/api/core/api";
 import { ProductDto } from "@/api/models/ProductDto";
-import { Error } from "@/api/models/Error";
+import { ValidationError } from "@/api/models/ValidationError";
 import { HistoricService } from "./HistoricService";
 
 export class ProductsService {
-	public static validate(product: ProductDto): Array<Error> {
-		const errors: Error[] = [];
+	public static validate(product: ProductDto): Array<ValidationError> {
+		const errors: ValidationError[] = [];
 
 		if (!product.name) {
 			errors.push({ name: "name", message: "O nome é obrigatório." });
