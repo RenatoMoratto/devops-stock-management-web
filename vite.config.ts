@@ -9,6 +9,8 @@ export default defineConfig({
 		globals: true,
 		environment: "happy-dom",
 		setupFiles: ["src/setupTest.ts"],
+		reporters: 'vitest-sonar-reporter',
+        outputFile: 'report/sonar-report.xml',
 		coverage: {
 			provider: "c8",
 			reporter: ['lcov']
