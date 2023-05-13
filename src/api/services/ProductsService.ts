@@ -43,7 +43,7 @@ export class ProductsService {
 			if (isAxiosError(error)) {
 				throw error;
 			}
-			throw "Erro ao carregar produtos";
+			throw new Error("Erro ao carregar produtos");
 		}
 	}
 
@@ -62,7 +62,7 @@ export class ProductsService {
 			if (isAxiosError(error)) {
 				throw error.message;
 			}
-			throw "Erro ao salvar produto";
+			throw new Error("Erro ao salvar produto");
 		}
 	}
 
@@ -96,7 +96,7 @@ export class ProductsService {
 			if (isAxiosError(error)) {
 				throw error;
 			}
-			throw "Erro ao editar produto";
+			throw new Error("Erro ao editar produto");
 		}
 	}
 
@@ -115,7 +115,7 @@ export class ProductsService {
 			if (isAxiosError(error)) {
 				throw error;
 			}
-			throw "Erro ao excluir produto";
+			throw new Error("Erro ao excluir produto");
 		}
 	}
 }
