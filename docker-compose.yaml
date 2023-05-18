@@ -1,7 +1,6 @@
 version: '3.4'
 services:
-    react-nginx-app:
-      stdin_open: true
+    devops-web:
       build:
         context: .
         dockerfile: Dockerfile
