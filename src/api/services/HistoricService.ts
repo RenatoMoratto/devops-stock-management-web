@@ -12,7 +12,7 @@ export class HistoricService {
 			if (isAxiosError(error)) {
 				throw error;
 			}
-			throw "Erro ao carregar histórico";
+			throw new Error("Erro ao carregar histórico");
 		}
 	}
 
@@ -25,7 +25,7 @@ export class HistoricService {
 			if (isAxiosError(error)) {
 				throw error.message;
 			}
-			throw "Erro ao salvar alteração";
+			throw new Error("Erro ao salvar alteração");
 		}
 	}
 }

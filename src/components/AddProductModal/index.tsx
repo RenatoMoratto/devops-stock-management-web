@@ -11,8 +11,7 @@ import {
 	Button,
 	useToast,
 } from "@chakra-ui/react";
-import { useRef, useState } from "react";
-import { FormEvent } from "react";
+import { useRef, useState, FormEvent } from "react";
 import { ProductFormFields, ProductFormRefType } from "../ProductFormFields";
 
 type AddProductModalProps = {
