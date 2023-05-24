@@ -1,11 +1,11 @@
 import { isAxiosError } from "axios";
 import { api } from "@/api/core/api";
-import { HistoricDto } from "@/api/models/HistoricDto";
+import { Historic } from "@/api/models/Historic";
 
 export class HistoricService {
-	public static async getAll(): Promise<Array<HistoricDto>> {
+	public static async getAll(): Promise<Array<Historic>> {
 		try {
-			const response = await api.get<Array<HistoricDto>>("/historic");
+			const response = await api.get<Array<Historic>>("/historic");
 
 			return response.data;
 		} catch (error) {
@@ -13,19 +13,6 @@ export class HistoricService {
 				throw error;
 			}
 			throw "Erro ao carregar histórico";
-		}
-	}
-
-	public static async create(data: HistoricDto): Promise<HistoricDto> {
-		try {
-			const response = await api.post<HistoricDto>("/historic", data);
-
-			return response.data;
-		} catch (error) {
-			if (isAxiosError(error)) {
-				throw error.message;
-			}
-			throw "Erro ao salvar alteração";
 		}
 	}
 }

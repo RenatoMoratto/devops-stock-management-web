@@ -2,26 +2,46 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import { HistoricTable } from "./index";
 import { vi } from "vitest";
 import { HistoricService } from "@/api/services/HistoricService";
-import { HistoricDto } from "@/api/models/HistoricDto";
+import { Historic } from "@/api/models/Historic";
 import { act } from "react-dom/test-utils";
 
 vi.mock("axios");
 
 describe("HistoricTable", () => {
-	const mockHistoric: HistoricDto[] = [
+	const mockHistoric: Historic[] = [
 		{
-			id: "1",
-			createdAt: "2022-04-11T15:20:00.000Z",
-			status: "CREATED",
-			productName: "Product 1",
-			amount: 10,
+			historicId: 1,
+			historicCreatedAt: "23-05-2023",
+			historicProduct: {
+				productId: 1,
+				productName: "Product 1",
+				productDescription: "Product 1 description",
+				productCategory: "Category 1",
+				productSupplier: "Supplier 1",
+				productAmount: 10,
+				produtcUnitPrice: 10,
+				productCreatedAt: "28-05-2023",
+				productIsActive: true,
+			},
+			historicProductAmount: 5,
+			historicStatus: "CREATED",
 		},
 		{
-			id: "2",
-			createdAt: "2022-04-12T10:30:00.000Z",
-			status: "EDITED",
-			productName: "Product 2",
-			amount: 5,
+			historicId: 2,
+			historicCreatedAt: "23-05-2023",
+			historicProduct: {
+				productId: 1,
+				productName: "Product 2",
+				productDescription: "Product 1 description",
+				productCategory: "Category 1",
+				productSupplier: "Supplier 1",
+				productAmount: 5,
+				produtcUnitPrice: 12,
+				productCreatedAt: "28-05-2023",
+				productIsActive: true,
+			},
+			historicProductAmount: 5,
+			historicStatus: "EDITED",
 		},
 	];
 

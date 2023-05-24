@@ -1,4 +1,4 @@
-import { HistoricDto } from "@/api/models/HistoricDto";
+import { Historic } from "@/api/models/Historic";
 import { HistoricService } from "@/api/services/HistoricService";
 import { useMask } from "@/hooks/useMask";
 import { CreatedIcon, DeletedIcon, EditedIcon, SortAscendingIcon, SortDescendingIcon } from "@/icons";
@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { CustomTable } from "../CustomTable";
 
 export function HistoricTable() {
-	const [historic, setHistoric] = useState<HistoricDto[]>([]);
+	const [historic, setHistoric] = useState<Historic[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const toast = useToast();
 	const mask = useMask();
@@ -46,18 +46,18 @@ export function HistoricTable() {
 				</Tr>
 			}
 			rows={historic.map(item => (
-				<Tr key={item.id}>
+				<Tr key={item.historicId}>
 					<Td>
-						{mask.toDate(item.createdAt!)}
+						{mask.toDate(item.historicCreatedAt!)}
 						<br />
-						{mask.toDatetime(item.createdAt!)}
+						{mask.toDatetime(item.historicCreatedAt!)}
 					</Td>
 					<Td>
 						<HStack>
-							<Icon boxSize={6}>{historicItemIcon[item.status]}</Icon>
+							<Icon boxSize={6}>{historicItemIcon[item.historicStatus]}</Icon>
 							<span>
-								{item.productName}
-								{item.status !== "DELETED" && <span> ({item.amount})</span>}
+								{item.historicProduct.productName}
+								{item.historicStatus !== "DELETED" && <span> ({item.historicProductAmount})</span>}
 							</span>
 						</HStack>
 					</Td>
