@@ -2,15 +2,37 @@ import { describe, expect, vi } from "vitest";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { EditProductModal } from "./index";
 import { ProductsService } from "@/api/services/ProductsService";
+import { Product } from "@/api/models/Product";
+import { ProductDto } from "@/api/models/ProductDto";
+
+const productReturn: Product = {
+	productId: 1,
+	productName: "Product 1",
+	productDescription: "Product 1 description",
+	productCategory: "Category 1",
+	productSupplier: "Supplier 1",
+	productAmount: 1,
+	produtcUnitPrice: 10,
+	productCreatedAt: "28-05-2023",
+	productIsActive: true,
+};
+
+const product: ProductDto = {
+	productName: "Product 1",
+	productDescription: "Product 1 description",
+	productCategory: "Category 1",
+	productSupplier: "Supplier 1",
+	productAmount: 1,
+	produtcUnitPrice: 10,
+};
 
 const productInitialValue = {
-	id: undefined,
-	name: "",
-	description: "",
-	category: "",
-	amount: 0,
-	unitPrice: 0,
-	supplier: "",
+	productName: "",
+	productDescription: "",
+	productCategory: "",
+	productSupplier: "",
+	productAmount: 0,
+	produtcUnitPrice: 0,
 };
 
 describe("AddProductModal", () => {
@@ -37,12 +59,12 @@ describe("AddProductModal", () => {
 		const form = screen.getByTestId("edit-product-form");
 
 		expect(form).toHaveFormValues({
-			name: productInitialValue.name,
-			description: productInitialValue.description,
-			category: productInitialValue.category,
-			amount: String(productInitialValue.amount),
-			unitPrice: String(productInitialValue.unitPrice),
-			supplier: productInitialValue.supplier,
+			productName: productInitialValue.productName,
+			productDescription: productInitialValue.productDescription,
+			productCategory: productInitialValue.productCategory,
+			productAmount: String(productInitialValue.productAmount),
+			produtcUnitPrice: String(productInitialValue.produtcUnitPrice),
+			productSupplier: productInitialValue.productSupplier,
 		});
 	});
 
@@ -54,23 +76,22 @@ describe("AddProductModal", () => {
 		const unitPriceInput = screen.getByRole("spinbutton", { name: "Valor unitário" });
 		const supplierInput = screen.getByRole("textbox", { name: "Fornecedor" });
 
-		fireEvent.change(nameInput, { target: { value: "T-shirt" } });
-		fireEvent.change(descriptionInput, { target: { value: "Cotton T-shirt for everyday use" } });
-		fireEvent.change(categoryInput, { target: { value: "Clothing" } });
-		fireEvent.change(amountInput, { target: { value: 100 } });
-		fireEvent.change(unitPriceInput, { target: { value: 15.99 } });
-		fireEvent.change(supplierInput, { target: { value: "ABC Clothing Co." } });
+		fireEvent.change(nameInput, { target: { value: product.productName } });
+		fireEvent.change(descriptionInput, { target: { value: product.productDescription } });
+		fireEvent.change(categoryInput, { target: { value: product.productCategory } });
+		fireEvent.change(amountInput, { target: { value: product.productAmount } });
+		fireEvent.change(unitPriceInput, { target: { value: product.produtcUnitPrice } });
+		fireEvent.change(supplierInput, { target: { value: product.productSupplier } });
 
 		const form = screen.getByTestId("edit-product-form");
 
-		expect(form).toHaveFormValues({
-			name: "T-shirt",
-			description: "Cotton T-shirt for everyday use",
-			category: "Clothing",
-			amount: "100",
-			unitPrice: "15.99",
-			supplier: "ABC Clothing Co.",
-		});
+		const productExpected = {
+			...product,
+			productAmount: product.productAmount.toString(),
+			produtcUnitPrice: product.produtcUnitPrice.toString(),
+		};
+
+		expect(form).toHaveFormValues(productExpected);
 	});
 
 	it("closes on close button click", () => {
@@ -91,7 +112,7 @@ describe("AddProductModal", () => {
 
 	it("closes after submit the form", async () => {
 		const submitButton = screen.getByRole("button", { name: /salvar/i });
-		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productReturn);
 
 		fireEvent.click(submitButton);
 
@@ -99,12 +120,12 @@ describe("AddProductModal", () => {
 	});
 
 	test("should update a product on submit", () => {
-		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productReturn);
 
 		fireEvent.submit(screen.getByTestId("edit-product-form"));
 
 		waitFor(() => {
-			expect(ProductsService.update).toHaveBeenCalledWith(productInitialValue, productInitialValue.id);
+			expect(ProductsService.update).toHaveBeenCalledWith(productReturn, productReturn.productId);
 			expect(fetchProducts).toHaveBeenCalled();
 			expect(onClose).toHaveBeenCalled();
 		});
@@ -112,7 +133,7 @@ describe("AddProductModal", () => {
 
 	it("renders loading while submitting the form", async () => {
 		const submitButton = screen.getByRole("button", { name: /salvar/i });
-		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productReturn);
 
 		fireEvent.click(submitButton);
 
@@ -129,13 +150,13 @@ describe("AddProductModal", () => {
 		fireEvent.submit(screen.getByTestId("edit-product-form"));
 
 		waitFor(() => {
-			expect(ProductsService.update).toHaveBeenCalledWith(productInitialValue, productInitialValue.id);
+			expect(ProductsService.update).toHaveBeenCalledWith(productReturn, productReturn.productId);
 			expect(screen.getByText(errorMessage)).toBeInTheDocument();
 		});
 	});
 
 	it("should not call handleEditProduct when form is invalid", async () => {
-		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productInitialValue);
+		vi.spyOn(ProductsService, "update").mockResolvedValueOnce(productReturn);
 		const nameInput = screen.getByRole("textbox", { name: "Nome" });
 
 		fireEvent.change(nameInput, { target: { value: "" } });
@@ -146,8 +167,8 @@ describe("AddProductModal", () => {
 
 		waitFor(() => {
 			expect(ProductsService.update).not.toHaveBeenCalledWith(
-				{ ...productInitialValue, name: "" },
-				productInitialValue.id
+				{ ...productReturn, productName: "" },
+				productReturn.productId
 			);
 			expect(fetchProducts).not.toHaveBeenCalled();
 			expect(onClose).not.toHaveBeenCalled();

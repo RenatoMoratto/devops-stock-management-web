@@ -21,15 +21,6 @@ type AddProductModalProps = {
 	fetchProducts: () => void;
 };
 
-const productInitialValue: ProductDto = {
-	name: "",
-	description: "",
-	category: "",
-	amount: 0,
-	unitPrice: 0,
-	supplier: "",
-};
-
 export function AddProductModal(props: AddProductModalProps) {
 	const [isLoading, setIsLoading] = useState(false);
 	const formRef = useRef<ProductFormRefType>(null);

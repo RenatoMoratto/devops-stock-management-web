@@ -1,4 +1,4 @@
-import { ProductDto } from "@/api/models/ProductDto";
+import { ProductDto } from "@/api/models/CreateProductDto";
 import { ProductsService } from "@/api/services/ProductsService";
 import {
 	Modal,

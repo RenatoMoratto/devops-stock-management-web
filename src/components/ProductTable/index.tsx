@@ -1,6 +1,6 @@
 import { Tr, Th, Button, ButtonGroup, Td, useToast, useDisclosure } from "@chakra-ui/react";
 import { useMask } from "@/hooks/useMask";
-import { ProductDto } from "@/api/models/ProductDto";
+import { ProductDto } from "@/api/models/CreateProductDto";
 import { ProductsService } from "@/api/services/ProductsService";
 import { useState } from "react";
 import { EditProductModal } from "../EditProductModal";

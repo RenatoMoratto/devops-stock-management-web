@@ -1,24 +1,24 @@
 import { describe, expect, vi } from "vitest";
 import { act, fireEvent, render, screen } from "@testing-library/react";
 import { ProductFormFields, ProductFormRefType } from "./index";
+import { ProductDto } from "@/api/models/ProductDto";
 
-const productInitialValue = {
-	id: undefined,
-	name: "",
-	description: "",
-	category: "",
-	amount: 0,
-	unitPrice: 0,
-	supplier: "",
+const productInitialValue: ProductDto = {
+	productName: "",
+	productDescription: "",
+	productCategory: "",
+	productSupplier: "",
+	productAmount: 0,
+	produtcUnitPrice: 0,
 };
 
 const product = {
-	name: "T-shirt",
-	description: "Cotton T-shirt for everyday use",
-	category: "Clothing",
-	amount: 100,
-	unitPrice: 15.99,
-	supplier: "ABC Clothing Co.",
+	productName: "Product",
+	productDescription: "Product description",
+	productCategory: "Category",
+	productSupplier: "Supplier",
+	productAmount: 1,
+	produtcUnitPrice: 10,
 };
 
 describe("ProductFormFields", () => {
@@ -32,12 +32,12 @@ describe("ProductFormFields", () => {
 		const fieldset = screen.getByTestId("product-form-fields");
 
 		expect(fieldset).toHaveFormValues({
-			name: productInitialValue.name,
-			description: productInitialValue.description,
-			category: productInitialValue.category,
-			amount: String(productInitialValue.amount),
-			unitPrice: String(productInitialValue.unitPrice),
-			supplier: productInitialValue.supplier,
+			productName: productInitialValue.productName,
+			productDescription: productInitialValue.productDescription,
+			productCategory: productInitialValue.productCategory,
+			productSupplier: productInitialValue.productSupplier,
+			productAmount: String(productInitialValue.productAmount),
+			produtcUnitPrice: String(productInitialValue.produtcUnitPrice),
 		});
 	});
 
@@ -55,22 +55,22 @@ describe("ProductFormFields", () => {
 		const unitPriceInput = screen.getByRole("spinbutton", { name: "Valor unitário" });
 		const supplierInput = screen.getByRole("textbox", { name: "Fornecedor" });
 
-		fireEvent.change(nameInput, { target: { value: product.name } });
-		fireEvent.change(descriptionInput, { target: { value: product.description } });
-		fireEvent.change(categoryInput, { target: { value: product.category } });
-		fireEvent.change(amountInput, { target: { value: product.amount } });
-		fireEvent.change(unitPriceInput, { target: { value: product.unitPrice } });
-		fireEvent.change(supplierInput, { target: { value: product.supplier } });
+		fireEvent.change(nameInput, { target: { value: product.productName } });
+		fireEvent.change(descriptionInput, { target: { value: product.productDescription } });
+		fireEvent.change(categoryInput, { target: { value: product.productCategory } });
+		fireEvent.change(amountInput, { target: { value: product.productAmount } });
+		fireEvent.change(unitPriceInput, { target: { value: product.produtcUnitPrice } });
+		fireEvent.change(supplierInput, { target: { value: product.productSupplier } });
 
 		const fieldset = screen.getByTestId("product-form-fields");
 
 		expect(fieldset).toHaveFormValues({
-			name: product.name,
-			description: product.description,
-			category: product.category,
-			amount: String(product.amount),
-			unitPrice: String(product.unitPrice),
-			supplier: product.supplier,
+			productName: product.productName,
+			productDescription: product.productDescription,
+			productCategory: product.productCategory,
+			productSupplier: product.productSupplier,
+			productAmount: String(product.productAmount),
+			produtcUnitPrice: String(product.produtcUnitPrice),
 		});
 	});
 });

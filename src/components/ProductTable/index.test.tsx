@@ -1,6 +1,6 @@
 import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
 import { ProductTable } from "./index";
-import { ProductDto } from "@/api/models/ProductDto";
+import { ProductDto } from "@/api/models/CreateProductDto";
 import { vi } from "vitest";
 import { ProductsService } from "@/api/services/ProductsService";
 

@@ -1,7 +1,7 @@
 import { describe, expect, vi } from "vitest";
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import App from "./App";
-import { ProductDto } from "./api/models/ProductDto";
+import { ProductDto } from "./api/models/CreateProductDto";
 import { ProductsService } from "./api/services/ProductsService";
 
 vi.mock("axios");
