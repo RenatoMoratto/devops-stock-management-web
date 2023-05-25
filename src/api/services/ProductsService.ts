@@ -66,7 +66,7 @@ export class ProductsService {
 		}
 	}
 
-	public static async update(data: ProductDto, id: string): Promise<Product> {
+	public static async update(data: ProductDto, id: number): Promise<Product> {
 		try {
 			const response = await api.patch<Product>(`/product/${id}`, data);
 
@@ -79,7 +79,7 @@ export class ProductsService {
 		}
 	}
 
-	public static async delete(id: string): Promise<Product> {
+	public static async delete(id: number): Promise<Product> {
 		try {
 			const response = await api.delete<Product>(`/product/${id}`);
 

@@ -56,8 +56,8 @@ export function HistoricTable() {
 						<HStack>
 							<Icon boxSize={6}>{historicItemIcon[item.historicStatus]}</Icon>
 							<span>
-								{item.historicProduct.productName}
-								{item.historicStatus !== "DELETED" && <span> ({item.historicProductAmount})</span>}
+								{item.productName}
+								{item.historicStatus !== "DELETED" && <span> ({item.ProductAmount})</span>}
 							</span>
 						</HStack>
 					</Td>

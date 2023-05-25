@@ -1,54 +1,31 @@
-import { act, fireEvent, render, screen, waitFor, within } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { ProductTable } from "./index";
-import { ProductDto } from "@/api/models/CreateProductDto";
 import { vi } from "vitest";
 import { ProductsService } from "@/api/services/ProductsService";
+import { Product } from "@/api/models/Product";
 
-const MOCK_PRODUCTS: ProductDto[] = [
+const MOCK_PRODUCTS: Product[] = [
 	{
-		id: "001",
-		name: "T-shirt",
-		description: "Cotton T-shirt for everyday use",
-		category: "Clothing",
-		amount: 100,
-		unitPrice: 15.99,
-		supplier: "ABC Clothing Co.",
+		productId: 1,
+		productName: "Product 1",
+		productDescription: "Product 1 description",
+		productCategory: "Category 1",
+		productSupplier: "Supplier 1",
+		productAmount: 1,
+		produtcUnitPrice: 10,
+		productCreatedAt: "28-12-2023",
+		productIsActive: true,
 	},
 	{
-		id: "002",
-		name: "Backpack",
-		description: "Lightweight backpack for outdoor activities",
-		category: "Outdoor gear",
-		amount: 50,
-		unitPrice: 39.99,
-		supplier: "DEF Gear Co.",
-	},
-	{
-		id: "003",
-		name: "Coffee Mug",
-		description: "Ceramic coffee mug with a funny quote",
-		category: "Kitchenware",
-		amount: 200,
-		unitPrice: 8.99,
-		supplier: "GHI Housewares Co.",
-	},
-	{
-		id: "004",
-		name: "Bluetooth Speaker",
-		description: "Portable wireless speaker with excellent sound quality",
-		category: "Electronics",
-		amount: 20,
-		unitPrice: 79.99,
-		supplier: "JKL Electronics Co.",
-	},
-	{
-		id: "005",
-		name: "Running Shoes",
-		description: "Comfortable and durable running shoes for men",
-		category: "Footwear",
-		amount: 80,
-		unitPrice: 129.99,
-		supplier: "MNO Sports Co.",
+		productId: 2,
+		productName: "Product 2",
+		productDescription: "Product 2 description",
+		productCategory: "Category 2",
+		productSupplier: "Supplier 2",
+		productAmount: 2,
+		produtcUnitPrice: 20,
+		productCreatedAt: "28-12-2023",
+		productIsActive: true,
 	},
 ];
 
@@ -66,44 +43,60 @@ describe("ProductTable", () => {
 	});
 
 	it("renders the correct header data", () => {
-		const [name, description, category, amount, unitPrice, supplier] = rows[0].querySelectorAll("th");
+		const [productName, productDescription, productCategory, productAmount, produtcUnitPrice, productSupplier] =
+			rows[0].querySelectorAll("th");
 
-		expect(name).toHaveTextContent("Nome");
-		expect(description).toHaveTextContent("Descrição");
-		expect(category).toHaveTextContent("Categoria");
-		expect(amount).toHaveTextContent("Quantidade");
-		expect(unitPrice).toHaveTextContent("Valor unitário");
-		expect(supplier).toHaveTextContent("Fornecedor");
+		expect(productName).toHaveTextContent("Nome");
+		expect(productDescription).toHaveTextContent("Descrição");
+		expect(productCategory).toHaveTextContent("Categoria");
+		expect(productAmount).toHaveTextContent("Quantidade");
+		expect(produtcUnitPrice).toHaveTextContent("Valor unitário");
+		expect(productSupplier).toHaveTextContent("Fornecedor");
 	});
 
 	it("renders the correct body data", () => {
 		MOCK_PRODUCTS.forEach((item, i) => {
-			const [name, description, category, amount, unitPrice, supplier, actions] =
-				rows[i + 1].querySelectorAll("td");
+			const [
+				productName,
+				productDescription,
+				productCategory,
+				productAmount,
+				produtcUnitPrice,
+				productSupplier,
+				actions,
+			] = rows[i + 1].querySelectorAll("td");
 
-			expect(name).toHaveTextContent(item.name);
-			expect(description).toHaveTextContent(item.description);
-			expect(category).toHaveTextContent(item.category);
-			expect(amount).toHaveTextContent(item.amount.toString());
-			expect(unitPrice).toHaveTextContent(`R$ ${item.unitPrice.toFixed(2).replace(".", ",")}`);
-			expect(supplier).toHaveTextContent(item.supplier);
+			expect(productName).toHaveTextContent(item.productName);
+			expect(productDescription).toHaveTextContent(item.productDescription);
+			expect(productCategory).toHaveTextContent(item.productCategory);
+			expect(productAmount).toHaveTextContent(item.productAmount.toString());
+			expect(produtcUnitPrice).toHaveTextContent(`R$ ${item.produtcUnitPrice.toFixed(2).replace(".", ",")}`);
+			expect(productSupplier).toHaveTextContent(item.productSupplier);
 			expect(actions).toBeInTheDocument();
 		});
 	});
 
 	it("remove row after delete product", async () => {
-		const [name, description, category, amount, unitPrice, supplier, actions] = rows[1].querySelectorAll("td");
+		const [
+			productName,
+			productDescription,
+			productCategory,
+			productAmount,
+			produtcUnitPrice,
+			productSupplier,
+			actions,
+		] = rows[1].querySelectorAll("td");
 		const deleteButton = screen.getAllByRole("button", { name: /Excluir/ });
 
 		fireEvent.click(deleteButton[0]);
 
 		waitFor(() => {
-			expect(name).not.toBeInTheDocument();
-			expect(description).not.toBeInTheDocument();
-			expect(category).not.toBeInTheDocument();
-			expect(amount).not.toBeInTheDocument();
-			expect(unitPrice).not.toBeInTheDocument();
-			expect(supplier).not.toBeInTheDocument();
+			expect(productName).not.toBeInTheDocument();
+			expect(productDescription).not.toBeInTheDocument();
+			expect(productCategory).not.toBeInTheDocument();
+			expect(productAmount).not.toBeInTheDocument();
+			expect(produtcUnitPrice).not.toBeInTheDocument();
+			expect(productSupplier).not.toBeInTheDocument();
 			expect(actions).not.toBeInTheDocument();
 		});
 	});
@@ -133,12 +126,12 @@ describe("ProductTable", () => {
 			const form = screen.getByTestId("edit-product-form");
 
 			expect(form).toHaveFormValues({
-				name: MOCK_PRODUCTS[0].name,
-				description: MOCK_PRODUCTS[0].description,
-				category: MOCK_PRODUCTS[0].category,
-				amount: String(MOCK_PRODUCTS[0].amount),
-				unitPrice: String(MOCK_PRODUCTS[0].unitPrice),
-				supplier: MOCK_PRODUCTS[0].supplier,
+				productName: MOCK_PRODUCTS[0].productName,
+				productDescription: MOCK_PRODUCTS[0].productDescription,
+				productCategory: MOCK_PRODUCTS[0].productCategory,
+				productAmount: String(MOCK_PRODUCTS[0].productAmount),
+				produtcUnitPrice: String(MOCK_PRODUCTS[0].produtcUnitPrice),
+				productSupplier: MOCK_PRODUCTS[0].productSupplier,
 			});
 		});
 	});

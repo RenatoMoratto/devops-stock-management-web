@@ -148,7 +148,7 @@ describe("ProductsService", () => {
 	});
 
 	describe("update", () => {
-		const productId = "123456";
+		const productId = 2;
 
 		it("should update an existing product", async () => {
 			const updatedProductData = {
@@ -180,7 +180,7 @@ describe("ProductsService", () => {
 	});
 
 	describe("delete", () => {
-		const productId = "123456";
+		const productId = 1;
 
 		it("should delete an existing product", async () => {
 			const deletedProductData = {

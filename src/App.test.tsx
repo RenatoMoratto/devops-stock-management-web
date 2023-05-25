@@ -1,7 +1,7 @@
 import { describe, expect, vi } from "vitest";
 import { act, render, screen, waitFor, within } from "@testing-library/react";
 import App from "./App";
-import { ProductDto } from "./api/models/CreateProductDto";
+import { Product } from "./api/models/Product";
 import { ProductsService } from "./api/services/ProductsService";
 
 vi.mock("axios");
@@ -18,24 +18,28 @@ describe("<App />", () => {
 	});
 
 	it("fetches and sets the product list", async () => {
-		const mockProducts: ProductDto[] = [
+		const mockProducts: Product[] = [
 			{
-				id: "1",
-				name: "Product 1",
-				description: "Description 1",
-				supplier: "Supplier 1",
-				category: "Category 1",
-				unitPrice: 10,
-				amount: 20,
+				productId: 1,
+				productName: "Product 1",
+				productDescription: "Product 1 description",
+				productCategory: "Category 1",
+				productSupplier: "Supplier 1",
+				productAmount: 10,
+				produtcUnitPrice: 10,
+				productCreatedAt: "28-12-2023",
+				productIsActive: true,
 			},
 			{
-				id: "2",
-				name: "Product 2",
-				description: "Description 2",
-				supplier: "Supplier 2",
-				category: "Category 2",
-				unitPrice: 5,
-				amount: 15,
+				productId: 2,
+				productName: "Product 2",
+				productDescription: "Product 2 description",
+				productCategory: "Category 2",
+				productSupplier: "Supplier 2",
+				productAmount: 5,
+				produtcUnitPrice: 20,
+				productCreatedAt: "28-12-2023",
+				productIsActive: true,
 			},
 		];
 

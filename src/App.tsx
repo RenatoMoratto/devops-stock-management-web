@@ -2,14 +2,14 @@ import { Box, VStack, useDisclosure, useToast } from "@chakra-ui/react";
 import { Header } from "@/components/Header";
 import { AddProductModal } from "@/components/AddProductModal";
 import { useState, useEffect } from "react";
-import { ProductDto } from "./api/models/CreateProductDto";
+import { Product } from "./api/models/Product";
 import { ProductsService } from "./api/services/ProductsService";
 import { ProductHeader } from "./components/ProductListHeader";
 import { ProductTable } from "./components/ProductTable";
 import { HistoricDrawer } from "./components/HistoricDrawer";
 
 function App() {
-	const [productList, setProductList] = useState<ProductDto[]>([]);
+	const [productList, setProductList] = useState<Product[]>([]);
 	const [isLoading, setIsLoading] = useState(true);
 	const { isOpen: isModalOpen, onOpen: onModalOpen, onClose: onModalClose } = useDisclosure();
 	const { isOpen: isDrawerOpen, onOpen: onDrawerOpen, onClose: onDrawerClose } = useDisclosure();

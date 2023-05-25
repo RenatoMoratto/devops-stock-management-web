@@ -1,4 +1,3 @@
-import { ProductDto } from "@/api/models/CreateProductDto";
 import { ProductsService } from "@/api/services/ProductsService";
 import {
 	Modal,
@@ -13,10 +12,12 @@ import {
 } from "@chakra-ui/react";
 import { FormEvent, useRef, useState } from "react";
 import { ProductFormFields, ProductFormRefType } from "@/components/ProductFormFields";
+import { Product } from "@/api/models/Product";
+import { ProductDto } from "@/api/models/ProductDto";
 
 type EditProductModalProps = {
 	isOpen: boolean;
-	product: ProductDto;
+	product: Product;
 	onClose: () => void;
 	fetchProducts: () => void;
 };
@@ -30,7 +31,14 @@ export function EditProductModal(props: EditProductModalProps) {
 		setIsLoading(true);
 
 		try {
-			await ProductsService.update(product, product.id!);
+			await ProductsService.update(
+				{
+					...product,
+					productAmount: Number(product.productAmount),
+					produtcUnitPrice: Number(product.produtcUnitPrice),
+				},
+				props.product.productId
+			);
 
 			toast({ status: "success", title: "Produto criado com sucesso." });
 			props.fetchProducts();

@@ -27,12 +27,15 @@ const product: ProductDto = {
 };
 
 const productInitialValue = {
+	productId: 0,
 	productName: "",
 	productDescription: "",
 	productCategory: "",
 	productSupplier: "",
 	productAmount: 0,
 	produtcUnitPrice: 0,
+	productCreatedAt: "",
+	productIsActive: true,
 };
 
 describe("AddProductModal", () => {
