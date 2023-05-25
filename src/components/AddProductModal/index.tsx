@@ -20,15 +20,6 @@ type AddProductModalProps = {
 	fetchProducts: () => void;
 };
 
-const productInitialValue: ProductDto = {
-	name: "",
-	description: "",
-	category: "",
-	amount: 0,
-	unitPrice: 0,
-	supplier: "",
-};
-
 export function AddProductModal(props: AddProductModalProps) {
 	const [isLoading, setIsLoading] = useState(false);
 	const formRef = useRef<ProductFormRefType>(null);
@@ -38,7 +29,11 @@ export function AddProductModal(props: AddProductModalProps) {
 		setIsLoading(true);
 
 		try {
-			await ProductsService.create(product);
+			await ProductsService.create({
+				...product,
+				productAmount: Number(product.productAmount),
+				produtcUnitPrice: Number(product.produtcUnitPrice),
+			});
 
 			toast({ status: "success", title: "Produto criado com sucesso." });
 			props.fetchProducts();

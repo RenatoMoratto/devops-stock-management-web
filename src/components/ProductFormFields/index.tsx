@@ -27,12 +27,12 @@ type ProductFormFieldsProps = {
 };
 
 const productInitialValue: ProductDto = {
-	name: "",
-	description: "",
-	category: "",
-	amount: 0,
-	unitPrice: 0,
-	supplier: "",
+	productName: "",
+	productDescription: "",
+	productCategory: "",
+	productAmount: 0,
+	produtcUnitPrice: 0,
+	productSupplier: "",
 };
 
 function _ProductFormFields(
@@ -73,36 +73,36 @@ function _ProductFormFields(
 			gap={4}
 		>
 			<GridItem area="name">
-				<FormControl isInvalid={errors.includes("name")}>
+				<FormControl isInvalid={errors.includes("productName")}>
 					<FormLabel>Nome</FormLabel>
 					<Input
 						onChange={handleProductChange}
-						value={product.name}
-						name="name"
+						value={product.productName}
+						name="productName"
 						placeholder="Digite o nome do produto"
 					/>
 				</FormControl>
 			</GridItem>
 
 			<GridItem area="category">
-				<FormControl isInvalid={errors.includes("category")}>
+				<FormControl isInvalid={errors.includes("productCategory")}>
 					<FormLabel>Categoria</FormLabel>
 					<Input
 						onChange={handleProductChange}
-						value={product.category}
-						name="category"
+						value={product.productCategory}
+						name="productCategory"
 						placeholder="Digite a categoria do produto"
 					/>
 				</FormControl>
 			</GridItem>
 
 			<GridItem area="description">
-				<FormControl isInvalid={errors.includes("description")}>
+				<FormControl isInvalid={errors.includes("productDescription")}>
 					<FormLabel>Descrição</FormLabel>
 					<Textarea
 						onChange={handleProductChange}
-						value={product.description}
-						name="description"
+						value={product.productDescription}
+						name="productDescription"
 						placeholder="Fale sobre o seu produto..."
 						resize="vertical"
 						rows={5}
@@ -111,26 +111,26 @@ function _ProductFormFields(
 			</GridItem>
 
 			<GridItem area="supplier">
-				<FormControl isInvalid={errors.includes("supplier")}>
+				<FormControl isInvalid={errors.includes("productSupplier")}>
 					<FormLabel>Fornecedor</FormLabel>
 					<Input
 						onChange={handleProductChange}
-						value={product.supplier}
-						name="supplier"
+						value={product.productSupplier}
+						name="productSupplier"
 						placeholder="Digite o nome do fornecedor"
 					/>
 				</FormControl>
 			</GridItem>
 
 			<GridItem area="unitPrice">
-				<FormControl isInvalid={errors.includes("unitPrice")}>
+				<FormControl isInvalid={errors.includes("produtcUnitPrice")}>
 					<FormLabel>Valor unitário</FormLabel>
-					<NumberInput value={product.unitPrice} precision={2} min={0.01}>
+					<NumberInput value={product.produtcUnitPrice} precision={2} min={0.01}>
 						<InputGroup>
 							<InputLeftElement pointerEvents="none" children="R$" />
 							<NumberInputField
 								onChange={handleProductChange}
-								name="unitPrice"
+								name="produtcUnitPrice"
 								placeholder="0.00"
 								paddingLeft="9"
 							/>
@@ -140,10 +140,10 @@ function _ProductFormFields(
 			</GridItem>
 
 			<GridItem area="amount">
-				<FormControl isInvalid={errors.includes("amount")}>
+				<FormControl isInvalid={errors.includes("productAmount")}>
 					<FormLabel>Quantidade</FormLabel>
-					<NumberInput min={1} value={product.amount}>
-						<NumberInputField onChange={handleProductChange} name="amount" placeholder="0" />
+					<NumberInput min={1} value={product.productAmount}>
+						<NumberInputField onChange={handleProductChange} name="productAmount" placeholder="0" />
 					</NumberInput>
 				</FormControl>
 			</GridItem>

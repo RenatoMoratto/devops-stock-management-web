@@ -1,13 +1,13 @@
 import { Tr, Th, Button, ButtonGroup, Td, useToast, useDisclosure } from "@chakra-ui/react";
 import { useMask } from "@/hooks/useMask";
-import { ProductDto } from "@/api/models/ProductDto";
+import { Product } from "@/api/models/Product";
 import { ProductsService } from "@/api/services/ProductsService";
 import { useState } from "react";
 import { EditProductModal } from "../EditProductModal";
 import { CustomTable } from "../CustomTable";
 
 type ProductTableProps = {
-	data: ProductDto[];
+	data: Product[];
 	isLoading: boolean;
 	fetchProducts: () => void;
 };
@@ -20,7 +20,7 @@ export function ProductTable({ isLoading, data, fetchProducts }: ProductTablePro
 	const mask = useMask();
 	const toast = useToast();
 
-	const handleDeleteProduct = async (productId: string) => {
+	const handleDeleteProduct = async (productId: number) => {
 		try {
 			await ProductsService.delete(productId);
 
@@ -60,15 +60,15 @@ export function ProductTable({ isLoading, data, fetchProducts }: ProductTablePro
 					</Tr>
 				}
 				rows={data.map((item, index) => (
-					<Tr key={item.id}>
-						<Td>{item.name}</Td>
+					<Tr key={item.productId}>
+						<Td>{item.productName}</Td>
 						<Td maxWidth="sm" overflowX="clip" textOverflow="ellipsis">
-							{item.description}
+							{item.productDescription}
 						</Td>
-						<Td>{item.category}</Td>
-						<Td isNumeric>{item.amount}</Td>
-						<Td isNumeric>{mask.toBRL(item.unitPrice)}</Td>
-						<Td>{item.supplier}</Td>
+						<Td>{item.productCategory}</Td>
+						<Td isNumeric>{item.productAmount}</Td>
+						<Td isNumeric>{mask.toBRL(item.produtcUnitPrice)}</Td>
+						<Td>{item.productSupplier}</Td>
 						<Td>
 							<ButtonGroup spacing="2">
 								<Button
@@ -83,7 +83,7 @@ export function ProductTable({ isLoading, data, fetchProducts }: ProductTablePro
 									size="sm"
 									colorScheme="red"
 									variant="outline"
-									onClick={() => handleDeleteProduct(item.id!)}
+									onClick={() => handleDeleteProduct(item.productId!)}
 								>
 									Excluir
 								</Button>

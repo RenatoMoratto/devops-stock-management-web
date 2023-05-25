@@ -4,24 +4,24 @@ import { ProductsService } from "@/api/services/ProductsService";
 import { api } from "../core/api";
 import { vi } from "vitest";
 import { AxiosError } from "axios";
-import { HistoricService } from "../services/HistoricService";
+import { Product } from "../models/Product";
 
 const product: ProductDto = {
-	name: "Product",
-	description: "Product description",
-	category: "Category",
-	supplier: "Supplier",
-	amount: 1,
-	unitPrice: 10,
+	productName: "Product",
+	productDescription: "Product description",
+	productCategory: "Category",
+	productSupplier: "Supplier",
+	productAmount: 1,
+	produtcUnitPrice: 10,
 };
 
 const emptyProduct: ProductDto = {
-	name: "",
-	description: "",
-	category: "",
-	supplier: "",
-	amount: 0,
-	unitPrice: 0,
+	productName: "",
+	productDescription: "",
+	productCategory: "",
+	productSupplier: "",
+	productAmount: 0,
+	produtcUnitPrice: 0,
 };
 
 describe("ProductsService", () => {
@@ -35,30 +35,30 @@ describe("ProductsService", () => {
 		it("should return an array with errors if the product is invalid", () => {
 			const errors: ValidationError[] = ProductsService.validate(emptyProduct);
 
-			expect(errors).toContainEqual({ name: "name", message: "O nome é obrigatório." });
-			expect(errors).toContainEqual({ name: "description", message: "A descrição é obrigatório." });
-			expect(errors).toContainEqual({ name: "category", message: "A categoria é obrigatório." });
-			expect(errors).toContainEqual({ name: "supplier", message: "O fornecedor é obrigatório." });
-			expect(errors).toContainEqual({ name: "amount", message: "A quantidade é obrigatório." });
-			expect(errors).toContainEqual({ name: "unitPrice", message: "O valor unitário é obrigatório." });
+			expect(errors).toContainEqual({ name: "productName", message: "O nome é obrigatório." });
+			expect(errors).toContainEqual({ name: "productDescription", message: "A descrição é obrigatório." });
+			expect(errors).toContainEqual({ name: "productCategory", message: "A categoria é obrigatório." });
+			expect(errors).toContainEqual({ name: "productSupplier", message: "O fornecedor é obrigatório." });
+			expect(errors).toContainEqual({ name: "productAmount", message: "A quantidade é obrigatório." });
+			expect(errors).toContainEqual({ name: "produtcUnitPrice", message: "O valor unitário é obrigatório." });
 		});
 
 		it("should validate if amount and unittPrice are lower or equals 0", () => {
 			const errors: ValidationError[] = ProductsService.validate({
-				name: "Name",
-				description: "Description",
-				category: "Category",
-				supplier: "Supplier",
-				amount: -1,
-				unitPrice: -5.99,
+				productName: "Name",
+				productDescription: "Description",
+				productCategory: "Category",
+				productSupplier: "Supplier",
+				productAmount: -1,
+				produtcUnitPrice: -5.99,
 			});
 
 			expect(errors).toContainEqual({
-				name: "amount",
+				name: "productAmount",
 				message: "A quantidade deve conter um valor maior ou igual à 0(zero).",
 			});
 			expect(errors).toContainEqual({
-				name: "unitPrice",
+				name: "produtcUnitPrice",
 				message: "O valor unitário deve conter um valor maior que 0(zero).",
 			});
 		});
@@ -66,24 +66,28 @@ describe("ProductsService", () => {
 
 	describe("getAll", () => {
 		it("should return an array of products", async () => {
-			const products: ProductDto[] = [
+			const products: Product[] = [
 				{
-					id: "1",
-					name: "Product 1",
-					description: "Product 1 description",
-					category: "Category 1",
-					supplier: "Supplier 1",
-					amount: 1,
-					unitPrice: 10,
+					productId: 1,
+					productName: "Product 1",
+					productDescription: "Product 1 description",
+					productCategory: "Category 1",
+					productSupplier: "Supplier 1",
+					productAmount: 1,
+					produtcUnitPrice: 10,
+					productCreatedAt: "28-12-2023",
+					productIsActive: true,
 				},
 				{
-					id: "2",
-					name: "Product 2",
-					description: "Product 2 description",
-					category: "Category 2",
-					supplier: "Supplier 2",
-					amount: 2,
-					unitPrice: 20,
+					productId: 2,
+					productName: "Product 2",
+					productDescription: "Product 2 description",
+					productCategory: "Category 2",
+					productSupplier: "Supplier 2",
+					productAmount: 2,
+					produtcUnitPrice: 20,
+					productCreatedAt: "28-12-2023",
+					productIsActive: true,
 				},
 			];
 
@@ -144,92 +148,43 @@ describe("ProductsService", () => {
 	});
 
 	describe("update", () => {
-		const productId = "123456";
+		const productId = 2;
 
 		it("should update an existing product", async () => {
 			const updatedProductData = {
-				id: productId,
+				productId,
 				...product,
 			};
 
 			vi.spyOn(api, "get").mockResolvedValueOnce({ data: updatedProductData });
-			vi.spyOn(api, "put").mockResolvedValueOnce({ data: updatedProductData });
+			vi.spyOn(api, "patch").mockResolvedValueOnce({ data: updatedProductData });
 
 			const updatedProduct = await ProductsService.update(product, productId);
 
 			expect(updatedProduct).toEqual(updatedProductData);
 		});
 
-		it("should create historic with UP status", async () => {
-			const previousProductData = {
-				id: productId,
-				...product,
-			};
-			const updatedProductData = {
-				id: productId,
-				...product,
-				amount: product.amount + 10,
-			};
-
-			vi.spyOn(api, "get").mockResolvedValueOnce({ data: previousProductData });
-			vi.spyOn(api, "put").mockResolvedValueOnce({ data: updatedProductData });
-			vi.spyOn(HistoricService, "create");
-
-			await ProductsService.update(updatedProductData, productId);
-
-			expect(HistoricService.create).toBeCalledWith({
-				productName: updatedProductData.name,
-				amount: updatedProductData.amount,
-				status: "UP",
-			});
-		});
-
-		it("should create historic with DOWN status", async () => {
-			const previousProductData = {
-				id: productId,
-				...product,
-				amount: product.amount + 10,
-			};
-			const updatedProductData = {
-				id: productId,
-				...product,
-			};
-
-			vi.spyOn(api, "get").mockResolvedValueOnce({ data: previousProductData });
-			vi.spyOn(api, "put").mockResolvedValueOnce({ data: updatedProductData });
-			vi.spyOn(HistoricService, "create");
-
-			await ProductsService.update(updatedProductData, productId);
-
-			expect(HistoricService.create).toBeCalledWith({
-				productName: updatedProductData.name,
-				amount: updatedProductData.amount,
-				status: "DOWN",
-			});
-		});
-
-
 		it("should re-throw AxiosError on failure", async () => {
 			vi.spyOn(api, "get").mockResolvedValueOnce(product);
-			vi.spyOn(api, "put").mockRejectedValueOnce(new AxiosError("Failed to get products"));
+			vi.spyOn(api, "patch").mockRejectedValueOnce(new AxiosError("Failed to get products"));
 
 			await expect(ProductsService.update(product, productId)).rejects.toThrow("Failed to get products");
 		});
 
 		it("should throw an error when updating a product fails", async () => {
 			vi.spyOn(api, "get").mockResolvedValueOnce(product);
-			vi.spyOn(api, "put").mockRejectedValueOnce(new Error("API error"));
+			vi.spyOn(api, "patch").mockRejectedValueOnce(new Error("API error"));
 
 			await expect(ProductsService.update(product, productId)).rejects.toThrowError("Erro ao editar produto");
 		});
 	});
 
 	describe("delete", () => {
-		const productId = "123456";
+		const productId = 1;
 
 		it("should delete an existing product", async () => {
 			const deletedProductData = {
-				id: productId,
+				productId,
 				...product,
 			};
 
