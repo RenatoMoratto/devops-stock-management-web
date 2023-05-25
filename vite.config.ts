@@ -9,6 +9,10 @@ export default defineConfig({
 		globals: true,
 		environment: "happy-dom",
 		setupFiles: ["src/setupTest.ts"],
+		coverage: {
+			provider: "c8",
+			reporter: ['lcov']
+		}
 	},
 	resolve: {
 		alias: {

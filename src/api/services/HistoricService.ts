@@ -12,7 +12,7 @@ export class HistoricService {
 			if (isAxiosError(error)) {
 				throw error;
 			}
-			throw "Erro ao carregar histórico";
+			throw new Error("Erro ao carregar histórico");
 		}
 	}
 }
